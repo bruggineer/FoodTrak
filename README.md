@@ -1,5 +1,7 @@
 # Project 2 Starter Kit
 
+Adding this line as a test commit
+
 The Project 2 Starter Kit is an opinionated, preconfigured MVC-style application intended to satisfy the stated requirements and additional requirements of Project 2. It comes with a prerolled authentication system, cypress integration testing, and eslint configuration.
 
 ## Getting Started
