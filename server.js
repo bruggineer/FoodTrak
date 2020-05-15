@@ -24,7 +24,7 @@ const app = express();
 
 // Set up our middleware!
 app.use(morgan("dev"));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
 // We need to use sessions to keep track of our user's login status
@@ -41,7 +41,7 @@ app.set("view engine", "handlebars");
 // Add all our routes
 app.use(routes);
 
-let config = { force: false };
+let config = { force: true };
 if (process.env.NODE_ENV === "test") {
   config.force = true;
 }

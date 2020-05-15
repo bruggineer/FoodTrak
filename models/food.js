@@ -7,12 +7,6 @@ module.exports = function(sequelize, DataTypes) {
         len: [1]
       }
     },
-    // eslint-disable-next-line camelcase
-    serving_qty: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      len: [1]
-    },
     carbs: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -32,14 +26,13 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   Food.associate = function(models) {
-    // We're saying that a Food should belong to an User
-    // A Food can't be created without an User due to the foreign key constraint
-    Food.belongsTo(models.User, {
-      foreignKey: {
-        allowNull: false
-      }
+    // Associating User with Posts
+    // When an User is deleted, also delete any associated Posts
+    Food.belongsToMany(models.User, {
+        through: models.UsersFood
     });
   };
-
   return Food;
 };
+
+
