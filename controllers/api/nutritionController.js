@@ -56,5 +56,17 @@ router.get("/:foodName", function(req, res) {
   });
 });
 
+router.post("/", function(req, res) {
+  db.UsersFood.create({ UserId: req.user.id, ...req.body })
+    .then(function(dbModel) {
+      res.send(dbModel);
+    })
+    .catch(function(err) {
+      if (err) {
+        throw err;
+      }
+    });
+});
+
 // Defining methods for the booksController
 module.exports = router;
