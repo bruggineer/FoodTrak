@@ -53,6 +53,10 @@ router.get("/forum", isAuthenticated, function(req, res) {
     .catch(err => res.status(422).json(err));
 });
 
+router.get("/logfood", isAuthenticated, function(req, res) {
+  res.render("logfood", { user: req.user });
+});
+
 /**
  * Generic Error Page
  */
