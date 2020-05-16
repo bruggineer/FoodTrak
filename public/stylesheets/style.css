@@ -1,3 +1,7 @@
+body {
+  margin-bottom: 40px;
+}
+
 form.signup,
 form.login {
   margin-top: 50px;
@@ -13,5 +17,5 @@ form.login {
 
 footer {
   text-align: center;
-  background-color: black;
+  background-color: lightgray;
 }

@@ -40,15 +40,19 @@ router.post("/", function(req, res) {
     }
   })
     .then(function(response) {
-      let data = response.data.foods;
-      console.log(data);
+      let data = response.data.foods[0];
       db.Food.create({
         // UserId: req.user.id,
-        name: data[0].food_name,
-        carbs: data[0].nf_total_carbohydrate / data.serving_qty,
-        calories: data[0].nf_calories / data.serving_qty,
+        name: data.food_name,
+        carbs: data.nf_total_carbohydrate / data.serving_qty,
+        calories: data.nf_calories / data.serving_qty,
+        protein: data.nf_calories / data.serving_qty,
+        sugars: data.nf_calories / data.serving_qty,
         // eslint-disable-next-line camelcase
-        consumed_at: data[0].consumed_at
+        total_fat: data.nf_calories / data.serving_qty,
+        // eslint-disable-next-line camelcase
+        consumed_at: data.consumed_at,
+        image: data.photo.thumb
       })
         .then(dbModel => res.json(dbModel))
         .catch(err => res.status(422).json(err));
