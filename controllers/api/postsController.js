@@ -36,7 +36,7 @@ router.post("/", function(req, res) {
  * Post - Update
  */
 router.put("/:id", function(req, res) {
-  db.Post.update({ _id: req.params.id }, req.body)
+  db.Post.update(req.body, { where: { id: req.params.id }})
     .then(dbModel => res.json(dbModel))
     .catch(err => res.status(422).json(err));
 });
@@ -45,8 +45,7 @@ router.put("/:id", function(req, res) {
  * Post - Delete
  */
 router.delete("/:id", function(req, res) {
-  db.Post.destroy({ _id: req.params.id })
-    .then(dbModel => dbModel.remove())
+  db.Post.destroy({ where: { id: req.params.id }})
     .then(dbModel => res.json(dbModel))
     .catch(err => res.status(422).json(err));
 });
