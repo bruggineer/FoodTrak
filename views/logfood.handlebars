@@ -5,64 +5,57 @@
         <form class="logfood">
             <div class="form-group">
                 <label for="exampleInputFood1">Food Eaten</label>
-                <input type="food" class="form-control" id="food-input" name="food" placeholder="Food Eaten">
+                <input type="food" class="form-control" id="food-input" name="food" placeholder="e.g. french toast">
             </div>
             <div class="form-group">
                 <label for="servings">Servings</label>
-                <select type="servings" class="form-control" id="servings-input" name="servings" placeholder="Servings">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                </select>
+                <input type="number" class="form-control" id="servings-input" name="servings" placeholder="Servings"
+                    min=1 max=10></input>
             </div>
-            <button type="submit" class="btn btn-primary">Log Food</button>
+            <p>Date: <input type="text" id="datepicker"></p>
+            <button type="submit" class="btn btn-primary" id="log-food-btn">Log Food</button>
         </form>
     </div>
 </div>
 </div>
 <script>
     $(document).ready(function () {
-        // Getting references to our form and inputs
-        var userEmail = $(`${user.email}`)
-        var foodName = $("#food-input").val().trim();
-        var quanity = $("input#quantityInput");
-        // When the form is submitted, we validate there's an email and password entered
-        food.on("submit", function (event) {
-            event.preventDefault();
-            var userData = {
-                email: userData.email,
-                food: userData.foodNameInput,
-                quanity: userData.quantityInput
-            };
-            if (!userData.foodName || !userData.quantity) {
-                return;
-            }
-            // If we have an email and password we run the loginUser function and clear the form
-            foodInput(userData.food, userData.quantity);
-            foodNameInput.val("");
-            quantityInput.val("");
+        $(function () {
+            $("#datepicker").datepicker();
         });
-        // loginUser does a post to our "auth/login" route and if successful, redirects us the the members page
-        function foodInput(food, quantity) {
-            $.post("/api/nutrition/:foodName", {
-                food: food,
-                quantity: quantity
-            })
+        // Getting references to our form and inputs
+        // When the form is submitted, we validate there's an email and password entered
+        $(".logfood").on("submit", function (event) {
+            event.preventDefault();
+            var foodName = $("#food-input").val().trim();
+            var quantity = $("#servings-input").val();
+            var date = $("#datepicker").val();
+            console.log(foodName);
+            console.log(quantity);
+            console.log(date);
+
+            $.get(`/api/nutrition/${foodName}`)
                 .then(function (data) {
-                    window.location.replace("/");
-                    // If there's an error, log the error
-                })
-                .catch(function (err) {
-                    console.log(err);
-                });
+                    $.post("/api/nutrition",
+                        {
+                            FoodId: data.id,
+                            quantity: quantity,
+                            date: date
+                        }
+                    )
+        })
+            .catch(function (err) {
+                console.log(err);
+                alert("Food does not exist");
+            });
+
+        if (!userData.foodName || !userData.quantity) {
+            return;
         }
+        foodInput(userData.food, userData.quantity);
+        foodNameInput.val("");
+        quantityInput.val("");
+    });
     });
 </script>
 </div>
