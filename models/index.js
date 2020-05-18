@@ -6,7 +6,7 @@ var Sequelize = require('sequelize');
 var basename = path.basename(module.filename);
 var env = process.env.NODE_ENV || 'development';
 var config = {
-  "username": process.env.USERNAME,
+  "username": process.env.USER,
   "password": process.env.DB_PASSWORD,
   "database": process.env.DATABASE,
   "host": process.env.HOST,
