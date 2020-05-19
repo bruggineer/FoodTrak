@@ -41,8 +41,8 @@
                     let image = $("<img>").attr("src", data.image);
 
                     let servingsInput = $("<input>").attr("type", "number").attr("id", "servings-input").attr("placeholder", "Servings").attr("min", 1).attr("max", 10).addClass("form-control");
-                    let datePicker = $("<input>").attr("type", "text").attr("id", "datepicker");
-                    let dateText = $("<p>").text("Date:");
+                    let datePicker = $("<input>").attr("type", "text").attr("id", "datepicker").attr("placeholder", "mm/dd/yyyy");
+                    let dateText = $("<p>").text("Date Consumed:");
                     dateText.append(datePicker);
                     $("#food-details").append(servingsInput, dateText);
 
