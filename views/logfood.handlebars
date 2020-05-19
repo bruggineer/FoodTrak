@@ -1,23 +1,24 @@
 {{> navbar user }}
 
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <form class="logfood">
-            <div class="form-group">
-                <label for="exampleInputFood1">Food Eaten</label>
-                <input type="food" class="form-control" id="food-input" name="food" placeholder="e.g. french toast">
-            </div>
-            <div class="form-group">
-                <label for="servings">Servings</label>
-                <input type="number" class="form-control" id="servings-input" name="servings" placeholder="Servings"
-                    min=1 max=10></input>
-            </div>
-            <p>Date: <input type="text" id="datepicker"></p>
-            <button type="submit" class="btn btn-primary" id="log-food-btn">Log Food</button>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form class="findfood">
+                <div class="form-group">
+                    <label for="exampleInputFood1">Food Eaten</label>
+                    <input type="food" class="form-control" id="food-input" name="food" placeholder="e.g. french toast">
+                </div>
+                <button type="submit" class="btn btn-primary" id="search-food-btn">Search Food</button>
+            </form>
+        </div>
+    </div>
+    <div class="row" id="food-container">
+        <form class="food-details-form">
+            <div class="form-group" id="food-details"></div>
         </form>
     </div>
 </div>
-</div>
+
 <script>
     $(document).ready(function () {
         $(function () {
@@ -25,37 +26,62 @@
         });
         // Getting references to our form and inputs
         // When the form is submitted, we validate there's an email and password entered
-        $(".logfood").on("submit", function (event) {
+        $(".findfood").on("submit", function (event) {
             event.preventDefault();
             var foodName = $("#food-input").val().trim();
-            var quantity = $("#servings-input").val();
-            var date = $("#datepicker").val();
-            console.log(foodName);
-            console.log(quantity);
-            console.log(date);
 
             $.get(`/api/nutrition/${foodName}`)
                 .then(function (data) {
-                    $.post("/api/nutrition",
-                        {
-                            FoodId: data.id,
-                            quantity: quantity,
-                            date: date
-                        }
-                    )
-        })
-            .catch(function (err) {
-                console.log(err);
-                alert("Food does not exist");
-            });
+                    let foodDiv = $("#food-container");
+                    let foodName = $("<h2>").text(`Food Item: ${data.name} \n`);
+                    let calories = $("<h4>").text(`Calories: ${data.calories} \n`);
+                    let carbs = $("<h4>").text(`Carbs: ${data.carbs} \n`);
+                    let protein = $("<h4>").text(`Protein: ${data.protein} \n`);
+                    let sugars = $("<h4>").text(`Sugars: ${data.sugars} \n`);
+                    let image = $("<img>").attr("src", data.image);
 
-        if (!userData.foodName || !userData.quantity) {
-            return;
-        }
-        foodInput(userData.food, userData.quantity);
-        foodNameInput.val("");
-        quantityInput.val("");
-    });
+                    let servingsInput = $("<input>").attr("type", "number").attr("id", "servings-input").attr("placeholder", "Servings").attr("min", 1).attr("max", 10).addClass("form-control");
+                    let datePicker = $("<input>").attr("type", "text").attr("id", "datepicker");
+                    let dateText = $("<p>").text("Date:");
+                    dateText.append(datePicker);
+                    $("#food-details").append(servingsInput, dateText);
+
+                    let acceptBtn = $("<button>").addClass("btn btn-primary log-food").attr("data-food-id", data.id).text("Add Food");
+                    let declineBtn = $("<button>").addClass("btn btn-danger remove-food").text("Remove");
+
+                    foodDiv.append(foodName, calories, carbs, protein, sugars, image, acceptBtn, declineBtn);
+
+                })
+                .catch(function (err) {
+                    console.log(err);
+                    alert("Food does not exist");
+                });
+        });
+
+        $("#food-container").on("click", ".log-food", function (event) {
+            event.preventDefault();
+            console.log(this);
+            let foodID = $(this).attr("data-food-id");
+            var servings = $("#servings-input").val();
+            var date = $("#datepicker").val();
+            console.log(servings);
+            console.log(date);
+            if (servings === null) {
+                alert("Please enter number of servings")
+            }
+            else if (date === null) {
+                alert("Please enter the date this item was eaten")
+            }
+            else {
+                $.post("/api/nutrition",
+                    {
+                        FoodId: foodID,
+                        quantity: servings,
+                        date: date
+                    }, function(data) {
+                        console.log(data);
+                    })
+            }
+        });
     });
 </script>
-</div>
