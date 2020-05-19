@@ -12,15 +12,24 @@
             </form>
         </div>
     </div>
-    <div class="row" id="food-container">
-        <form class="food-details-form">
+    <div class="row">
+        <!-- <form class="food-details-form">
             <div class="form-group" id="food-details"></div>
-        </form>
+        </form> -->
+        <div class="card food-card" style="width: 18rem;">
+            <div class="card-body">
+                <div class="card-text" id="food-container"></div>
+            </div>
+        </div>
     </div>
+
 </div>
 
 <script>
+    let foodContainer = $("#food-container");
+
     $(document).ready(function () {
+
         $(function () {
             $("#datepicker").datepicker();
         });
@@ -28,29 +37,12 @@
         // When the form is submitted, we validate there's an email and password entered
         $(".findfood").on("submit", function (event) {
             event.preventDefault();
-            var foodName = $("#food-input").val().trim();
+            foodContainer.empty();
 
+            var foodName = $("#food-input").val().trim();
             $.get(`/api/nutrition/${foodName}`)
                 .then(function (data) {
-                    let foodDiv = $("#food-container");
-                    let foodName = $("<h2>").text(`Food Item: ${data.name} \n`);
-                    let calories = $("<h4>").text(`Calories: ${data.calories} \n`);
-                    let carbs = $("<h4>").text(`Carbs: ${data.carbs} \n`);
-                    let protein = $("<h4>").text(`Protein: ${data.protein} \n`);
-                    let sugars = $("<h4>").text(`Sugars: ${data.sugars} \n`);
-                    let image = $("<img>").attr("src", data.image);
-
-                    let servingsInput = $("<input>").attr("type", "number").attr("id", "servings-input").attr("placeholder", "Servings").attr("min", 1).attr("max", 10).addClass("form-control");
-                    let datePicker = $("<input>").attr("type", "text").attr("id", "datepicker").attr("placeholder", "mm/dd/yyyy");
-                    let dateText = $("<p>").text("Date Consumed:");
-                    dateText.append(datePicker);
-                    $("#food-details").append(servingsInput, dateText);
-
-                    let acceptBtn = $("<button>").addClass("btn btn-primary log-food").attr("data-food-id", data.id).text("Add Food");
-                    let declineBtn = $("<button>").addClass("btn btn-danger remove-food").text("Remove");
-
-                    foodDiv.append(foodName, calories, carbs, protein, sugars, image, acceptBtn, declineBtn);
-
+                    createFoodCard(data);
                 })
                 .catch(function (err) {
                     console.log(err);
@@ -60,12 +52,10 @@
 
         $("#food-container").on("click", ".log-food", function (event) {
             event.preventDefault();
-            console.log(this);
             let foodID = $(this).attr("data-food-id");
             var servings = $("#servings-input").val();
             var date = $("#datepicker").val();
-            console.log(servings);
-            console.log(date);
+
             if (servings === null) {
                 alert("Please enter number of servings")
             }
@@ -80,8 +70,27 @@
                         date: date
                     }, function(data) {
                         console.log(data);
+                        
                     })
             }
         });
     });
+
+    function createFoodCard(data) {
+        let foodName = $("<p>").text(`Food Item: ${data.name} \n`).addClass("card-text");
+        let calories = $("<p>").text(`Calories: ${data.calories} \n`).addClass("card-text");
+        let carbs = $("<p>").text(`Carbs: ${data.carbs} \n`).addClass("card-text");
+        let protein = $("<p>").text(`Protein: ${data.protein} \n`).addClass("card-text");
+        let sugars = $("<p>").text(`Sugars: ${data.sugars} \n`).addClass("card-text");
+        let acceptBtn = $("<button>").addClass("btn btn-primary log-food").attr("data-food-id", data.id).text("Add Food");
+        let declineBtn = $("<button>").addClass("btn btn-danger remove-food").text("Remove");
+
+        let servingsInput = $("<input>").attr("type", "number").attr("id", "servings-input").attr("placeholder", "Servings").attr("min", 1).attr("max", 10).addClass("form-control");
+        let datePicker = $("<input>").attr("type", "text").attr("id", "datepicker").attr("placeholder", "mm/dd/yyyy");
+        let dateText = $("<p>").text("Date Consumed:");
+        dateText.append(datePicker);
+        let image = $("<img>").attr("src", data.image);
+
+        foodContainer.append(image, foodName, calories, carbs, protein, sugars, servingsInput, dateText, acceptBtn, declineBtn);
+    }
 </script>
