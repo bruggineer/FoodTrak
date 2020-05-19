@@ -12,7 +12,15 @@
             </form>
         </div>
     </div>
-    <div class="row" id="food-container">
+    {{!-- <div class="row food-post-card card text-white bg-primary mb-3" id="food-container">
+                <div class="card-header"><h4 class="text-white">{{foodID}}</h4></div>
+                <div class="card-body">
+                    <p class="card-text">{{foodDiv}}</p>
+                </div>
+            </div> --}}
+    
+    <div class="rowfood-post-card card text-white bg-primary mb-3" id="food-container">
+        <div class="card-header"><h4 class="text-white">{{foodID}}</h4></div>
         <form class="food-details-form">
             <div class="form-group" id="food-details"></div>
         </form>
@@ -26,10 +34,15 @@
         });
         // Getting references to our form and inputs
         // When the form is submitted, we validate there's an email and password entered
+        $(document).ready(function () {
+        $(function () {
+            $("#datepicker").datepicker();
+        });
+        // Getting references to our form and inputs
+        // When the form is submitted, we validate there's an email and password entered
         $(".findfood").on("submit", function (event) {
             event.preventDefault();
             var foodName = $("#food-input").val().trim();
-
             $.get(`/api/nutrition/${foodName}`)
                 .then(function (data) {
                     let foodDiv = $("#food-container");
@@ -38,25 +51,26 @@
                     let carbs = $("<h4>").text(`Carbs: ${data.carbs} \n`);
                     let protein = $("<h4>").text(`Protein: ${data.protein} \n`);
                     let sugars = $("<h4>").text(`Sugars: ${data.sugars} \n`);
-                    let image = $("<img>").attr("src", data.image);
-
+                    let image = $("<img>").attr("src", data.image).addClass("foodImage");
                     let servingsInput = $("<input>").attr("type", "number").attr("id", "servings-input").attr("placeholder", "Servings").attr("min", 1).attr("max", 10).addClass("form-control");
-                    let datePicker = $("<input>").attr("type", "text").attr("id", "datepicker");
-                    let dateText = $("<p>").text("Date:");
+                    let datePicker = $("<input>").attr("type", "text").attr("id", "datepicker").attr("placeholder", "mm/dd/yyyy");
+                    let dateText = $("<p>").text("Date Consumed:");
                     dateText.append(datePicker);
                     $("#food-details").append(servingsInput, dateText);
-
                     let acceptBtn = $("<button>").addClass("btn btn-primary log-food").attr("data-food-id", data.id).text("Add Food");
                     let declineBtn = $("<button>").addClass("btn btn-danger remove-food").text("Remove");
-
                     foodDiv.append(foodName, calories, carbs, protein, sugars, image, acceptBtn, declineBtn);
-
                 })
                 .catch(function (err) {
                     console.log(err);
                     alert("Food does not exist");
                 });
         });
+        $("#food-container").on("click", ".remove-food", function (event) {
+            event.preventDefault();
+            window.location.replace("/logfood");             
+        });
+            
 
         $("#food-container").on("click", ".log-food", function (event) {
             event.preventDefault();
@@ -82,6 +96,8 @@
                         console.log(data);
                     })
             }
-        });
+        
     });
+    });
+    })
 </script>

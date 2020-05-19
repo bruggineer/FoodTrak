@@ -15,6 +15,11 @@ form.login {
   width: 100%;
 }
 
+.foodImage {
+  width: 150px;
+  overflow: auto;
+}
+
 footer {
   text-align: center;
   background-color: #008cba;
