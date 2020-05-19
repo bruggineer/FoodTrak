@@ -59,10 +59,12 @@ router.get("/logfood", isAuthenticated, function(req, res) {
 
 router.get("/dashboard", isAuthenticated, function(req, res) {
   db.UsersFood.findAll({
+    include: [db.Food],
     where: {
       UserId: req.user.id
     }
   }).then(function(dbUsersFood) {
+    console.log(dbUsersFood);
     res.render("dashboard", { user: req.user, usersFood: dbUsersFood });
   });
 });
