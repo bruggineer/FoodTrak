@@ -13,13 +13,13 @@ router.get("/", function(req, res) {
 });
 
 /**
- * Home Page, again 
+ * Home Page, again
  */
 router.get("/home", function(req, res) {
   res.render("index", { user: req.user });
 });
 
-/** 
+/**
  * Signup page
  */
 router.get("/signup", function(req, res) {
@@ -42,7 +42,7 @@ router.get("/login", function(req, res) {
 });
 
 /**
- * Forum Page - 
+ * Forum Page -
  * Notice loading our posts, with that include!
  */
 router.get("/forum", isAuthenticated, function(req, res) {
@@ -57,6 +57,15 @@ router.get("/logfood", isAuthenticated, function(req, res) {
   res.render("logfood", { user: req.user });
 });
 
+router.get("/dashboard", isAuthenticated, function(req, res) {
+  db.UsersFood.findAll({
+    where: {
+      UserId: req.user.id
+    }
+  }).then(function(dbUsersFood) {
+    res.render("dashboard", { user: req.user, usersFood: dbUsersFood });
+  });
+});
 /**
  * Generic Error Page
  */
