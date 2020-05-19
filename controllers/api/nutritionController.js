@@ -51,8 +51,9 @@ router.get("/:foodName", function(req, res) {
             throw err;
           }
         });
+    } else {
+      res.send(dbResult);
     }
-    res.send(dbResult);
   });
 });
 
