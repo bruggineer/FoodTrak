@@ -2,6 +2,10 @@ body {
   margin-bottom: 30px;
 }
 
+.italic {
+  font-style: italic;
+}
+
 form.signup,
 form.login {
   margin-top: 50px;

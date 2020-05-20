@@ -59,7 +59,7 @@
             event.preventDefault();
             let foodID = $(this).attr("data-food-id");
             let servings = $("#servings-input").val();
-            let date = $("#datepicker").val();
+            let date = new Date($("#datepicker").val());
 
             if (servings === null) {
                 alert("Please enter number of servings");
