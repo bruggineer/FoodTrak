@@ -46,10 +46,10 @@ router.post("/", function(req, res) {
         name: data.food_name,
         carbs: data.nf_total_carbohydrate / data.serving_qty,
         calories: data.nf_calories / data.serving_qty,
-        protein: data.nf_calories / data.serving_qty,
-        sugars: data.nf_calories / data.serving_qty,
+        protein: data.nf_protein / data.serving_qty,
+        sugars: data.nf_sugars / data.serving_qty,
         // eslint-disable-next-line camelcase
-        total_fat: data.nf_calories / data.serving_qty,
+        total_fat: data.nf_total_fat / data.serving_qty,
         // eslint-disable-next-line camelcase
         consumed_at: data.consumed_at,
         image: data.photo.thumb

@@ -11,6 +11,11 @@
                 <button type="submit" class="btn btn-primary" id="search-food-btn">Search Food</button>
             </form>
         </div>
+        <div class="col-md-6 col-md-offset-3">
+            <ul>
+
+            </ul>
+        </div>
     </div>
     <div class="row">
         <div class="card food-card" style="width: 18rem;">
@@ -29,7 +34,7 @@
         $(function () {
             $("#datepicker").datepicker();
         });
-
+        
         $(".findfood").on("submit", function (event) {
             event.preventDefault();
             foodContainer.empty();
@@ -75,6 +80,7 @@
             }
         
       });
+
    });
 
     function createFoodCard(data) {
@@ -94,4 +100,12 @@
 
         foodContainer.append(image, foodName, calories, carbs, protein, sugars, servingsInput, dateText, acceptBtn, declineBtn);
     }
+    // function renderRecentFoods(user) {
+    //     let userId = user.id;
+    //     $.get(`/api/nutrition/${userId}`)
+    //     .then(function(usersFood) {
+            
+    //         // $("<li>").
+    //     })
+    // }
 </script>
