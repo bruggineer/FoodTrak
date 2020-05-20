@@ -50,6 +50,11 @@
                 });
         });
 
+        $("#food-container").on("click", ".remove-food", function (event) {
+            event.preventDefault();
+            window.location.replace("/logfood");             
+        });
+
         $("#food-container").on("click", ".log-food", function (event) {
             event.preventDefault();
             let foodID = $(this).attr("data-food-id");
