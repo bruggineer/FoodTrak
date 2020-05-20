@@ -13,9 +13,6 @@
         </div>
     </div>
     <div class="row">
-        <!-- <form class="food-details-form">
-            <div class="form-group" id="food-details"></div>
-        </form> -->
         <div class="card food-card" style="width: 18rem;">
             <div class="card-body">
                 <div class="card-text" id="food-container"></div>
@@ -26,15 +23,13 @@
 </div>
 
 <script>
-    let foodContainer = $("#food-container");
+  let foodContainer = $("#food-container");
 
-    $(document).ready(function () {
-
+  $(document).ready(function () {
         $(function () {
             $("#datepicker").datepicker();
         });
-        // Getting references to our form and inputs
-        // When the form is submitted, we validate there's an email and password entered
+
         $(".findfood").on("submit", function (event) {
             event.preventDefault();
             foodContainer.empty();
@@ -49,6 +44,12 @@
                     alert("Food does not exist");
                 });
         });
+        
+        $("#food-container").on("click", ".remove-food", function (event) {
+            event.preventDefault();
+            window.location.replace("/logfood");             
+        });
+            
 
         $("#food-container").on("click", ".log-food", function (event) {
             event.preventDefault();
@@ -73,8 +74,9 @@
                         
                     })
             }
-        });
-    });
+        
+      });
+   });
 
     function createFoodCard(data) {
         let foodName = $("<p>").text(`Food Item: ${data.name} \n`).addClass("card-text");
