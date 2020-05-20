@@ -47,14 +47,5 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
-
-  Food.associate = function(models) {
-    // Associating User with Posts
-    // When an User is deleted, also delete any associated Posts
-    // Food.belongsToMany(models.User, {
-    //   through: models.UsersFood,
-    //   uniqueKey: "id"
-    // });
-  };
   return Food;
 };

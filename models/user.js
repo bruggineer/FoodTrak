@@ -56,10 +56,6 @@ module.exports = function(sequelize, DataTypes) {
     User.hasMany(models.Post, {
       onDelete: "cascade"
     });
-    // User.belongsToMany(models.Food, {
-    //   through: models.UsersFood,
-    //   uniqueKey: "id"
-    // });
   };
 
   return User;
