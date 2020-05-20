@@ -1,55 +1,62 @@
 {{> navbar user}}
 
 <div class="container">
-    <div class="row">
-        <div class="col-md">
-            <div class="jumbotron" style="background-image: url(https://cdn.stocksnap.io/img-thumbs/960w/fruits-vegetables_VCXUQACTGW.jpg); background-size: 100%;">
-                <h1 class="display-3" style= "text-align: center; margin-top: 40px;">Dashboard</h1>
-            </div>
-        </div>
+  <div class="row">
+    <div class="col-md">
+      <div
+        class="jumbotron"
+        style="background-image: url(https://cdn.stocksnap.io/img-thumbs/960w/fruits-vegetables_VCXUQACTGW.jpg); background-size: 100%;"
+      >
+        <h1 class="display-3" style="text-align: center; margin-top: 40px;">
+          Dashboard
+        </h1>
+      </div>
     </div>
+  </div>
 
-    <div class="row">
-        <div class="col-md">
-
+  <div class="row">
+    <div class="col-md">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <div class="card-text" id="calories"></div>
         </div>
+      </div>
     </div>
-    <div class="row">
-       {{!-- <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Requirement</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="table-primary">
-                        <td>Utilize Handlebars for server-side templating</td>
-                    </tr>
-                    <tr>
-                        <td>Incorporate authentication (JSON Web Tokens, sessions, etc.)</td>
-                    </tr>
-                    <tr class="table-primary">
-                        <td>Use an existing public dataset to power the database</td>
-                    </tr>
-                    <tr>
-                        <td>Create a migration strategy for sharing data across team members, e.g., a seed/schema.sql
-                            file</td>
-                    </tr>
-                </tbody>
-            </table> --}}
-        </div>
-    </div>
+    <!-- <div class="col-md">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Calories</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-primary">
+            <td>Utilize Handlebars for server-side templating</td>
+          </tr>
+          <tr>
+            <td>
+              Incorporate authentication (JSON Web Tokens, sessions, etc.)
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div> -->
+  </div>
 </div>
 <script>
+  $(document).ready(function() {
+    $.get(`/api/nutrition/today`)
+      .then(function(response) {
+        console.log(response);
 
-
-     $(document).ready(function () {
-
-         $.get(`/api/nutrition/users/{{user.id}}`)
-         .then(function(response) {
-             console.log(response);
-         }).catch(function(err) {
-             if(err) throw err;
-         })
-     });
+        let calories = 0;
+        response.forEach(element => {
+            calories += element.Food.calories;
+        });
+        $("#calories").text(`Calories consumed Today: ${calories}`);
+      })
+      .catch(function(err) {
+        if (err) throw err;
+      });
+  });
 </script>

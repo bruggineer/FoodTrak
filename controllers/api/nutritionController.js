@@ -1,6 +1,9 @@
 const db = require("../../models");
 const router = require("express").Router();
 const axios = require("axios");
+const moment = require("moment");
+
+const Op = db.Sequelize.Op;
 /**
  * Food - Create
  * Notice how we are also taking in the User Id! Important!
@@ -9,7 +12,8 @@ router.get("/users/:userid", function(req, res) {
   db.UsersFood.findAll({
     where: {
       UserId: req.params.userid
-    }
+    },
+    include: [db.Food]
   }).then(function(dbUsersFood) {
     if (dbUsersFood) {
       res.send(dbUsersFood);
@@ -18,6 +22,19 @@ router.get("/users/:userid", function(req, res) {
     }
   });
 });
+
+router.get("/today", function(req, res) {
+  console.log(moment().startOf("day"));
+  db.UsersFood.findAll({
+    where: {
+      UserId: req.user.id,
+      date: moment().startOf("day")
+    },
+    include: [db.Food]
+  }).then(function(dbUsersFood) {
+    res.send(dbUsersFood);
+  })
+})
 
 router.get("/:foodName", function(req, res) {
   db.Food.findOne({
