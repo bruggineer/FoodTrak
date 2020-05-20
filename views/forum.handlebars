@@ -3,14 +3,24 @@
 <div class="container">
     <div class="row">
         <div class="col-md">
-            <div class="jumbotron">
-                <h4 class="display-6">Hello, {{user.email}}!</h4>
+            <div class="jumbotron" style="background-image: url(https://cdn.pixabay.com/photo/2016/07/21/11/17/mineral-water-1532300_1280.jpg); background-size: 100%;">
+                <h1 class="display-3" style= "text-align: center; margin-top: 40px;">Forum</h1>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md">
             <legend>Forum Posts</legend>
+            <div class="form-group">
+                    <label for="category-filter">Filter by Category:</label>
+                    <select id="category-filter" name="catchoice">
+                        <option value="dietonly">Diet Posts</option>
+                        <option value="exeronly">Exercise Posts</option>
+                        <option value="progonly">Progress Posts</option>
+                        <option value="motivonly">Motivational Posts</option>
+                        <option value="all">All Posts</option>
+                    </select>
+            </div>
             <div id="forum-posts">
             {{#each posts}}
             <div class="forum-post-card card text-white bg-primary mb-3">
@@ -19,40 +29,51 @@
                     <p class="card-text">{{body}}</p>
                     by {{'User.email'}}
                     @ {{createdAt}}
+                    <p>Under category: {{category}}</p>
                 </div>
             </div>
             {{/each}}
             </div>
         </div>
-
-
     </div>
+</div>
 
-    <div class="row">
-        <div class="col-md">
-            <form class="forum-post">
-                <fieldset>
-                    <legend>Create Your Own Post</legend>
-                    <p>
-                        Type in your post title and body below, and click submit to send it to our database. We will register it with your email address, and display it above with everyone else's posts!</p>
-                    </p>
-                    <div class="form-group">
-                        <label for="title-input">Title</label>
-                        <input type="text" class="form-control" id="title-input" aria-describedby="postHelp"
-                            placeholder="Enter your post title">
-                        <small id="postHelp" class="form-text text-muted">This'l be shared!</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="body-input">Body</label>
-                        <textarea class="form-control" id="body-input" name="body"
-                            placeholder="Enter your post body"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Post!</button>
-                </fieldset>
-            </form>
-            <br />
-        </div>
+<div class="row">
+    <div class="col-md">
+        <form class="forum-post">
+            <fieldset>
+                <legend>Create Your Own Post</legend>
+                <p>
+                    Type in your post title and body below, and click submit to send it to our database. We will
+                    register it with your email address, and display it above with everyone else's posts!</p>
+                </p>
+                <div class="form-group">
+                    <label for="title-input">Title</label>
+                    <input type="text" class="form-control" id="title-input" aria-describedby="postHelp"
+                        placeholder="Enter your post title">
+                    <small id="postHelp" class="form-text text-muted">This'll be shared!</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="body-input">Body</label>
+                    <textarea class="form-control" id="body-input" name="body"
+                        placeholder="Enter your post body"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="category-input">Category</label>
+                    <select id="category-input" name="category">
+                        <option value="diet">Diet</option>
+                        <option value="exercise">Exercise</option>
+                        <option value="progress">Progress</option>
+                        <option value="motivation">Motivation</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Post!</button>
+            </fieldset>
+        </form>
+        <br />
     </div>
+</div>
 </div>
 
 <script>
@@ -61,6 +82,8 @@
         const postForm = $("form.forum-post");
         const titleInput = $("input#title-input");
         const bodyInput = $("textarea#body-input");
+        const categoryInput = $("select#category-input");
+
 
         // When the form is submitted, we validate there's a title and body entered
         postForm.on("submit", function (event) {
@@ -68,24 +91,27 @@
             console.log(bodyInput.val(), titleInput.val())
             var postData = {
                 title: titleInput.val().trim(),
-                body: bodyInput.val().trim()
+                body: bodyInput.val().trim(),
+                category: categoryInput.val()
             };
 
-            if (!postData.title || !postData.body) {
+            if (!postData.title || !postData.body || !postData.category) {
                 return;
-            }
+            };
 
 
             // If we have a title and password  we run the sendPost function and clear the form
-            sendPost(postData.title, postData.body);
+            sendPost(postData.title, postData.body, postData.category);
             titleInput.val("");
             bodyInput.val("");
+            categoryInput.val("");
         });
 
         // sendPost does a post to our "api/posts" route and if successful, redirects us the the forum page
-        function sendPost(title, body) {
+        function sendPost(title, body, category) {
             $.post("/api/posts", {
                 title: title,
+                category: category,
                 body: body
             })
                 .then(function () {

@@ -20,6 +20,16 @@ router.get("/:id", function(req, res) {
 });
 
 /** 
+ * Post- Read All of one Category
+ */
+router.get("/:category", function(req, res) {
+  db.Post.findAll({where: {category : req.params.catchoice}})
+    .then(dbModel => res.json(dbModel))
+    .catch(err => res.status(422).json(err));
+});
+
+
+/** 
  * Post - Create
  * Notice how we are also taking in the User Id! Important!
  */
