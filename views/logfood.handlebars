@@ -53,20 +53,20 @@
         $("#food-container").on("click", ".log-food", function (event) {
             event.preventDefault();
             let foodID = $(this).attr("data-food-id");
-            var servings = $("#servings-input").val();
-            var date = $("#datepicker").val();
+            let servings = $("#servings-input").val();
+            let date = $("#datepicker").val();
 
             if (servings === null) {
-                alert("Please enter number of servings")
+                alert("Please enter number of servings");
             }
             else if (date === null) {
-                alert("Please enter the date this item was eaten")
+                alert("Please enter the date this item was eaten");
             }
             else {
                 $.post("/api/nutrition",
                     {
                         FoodId: foodID,
-                        quantity: servings,
+                        quantity: parseInt(servings),
                         date: date
                     }, function(data) {
                         console.log(data);
