@@ -1,40 +1,94 @@
 {{> navbar user }}
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6">
             <form class="findfood">
-                <div class="form-group">
-                    <label for="exampleInputFood1">Food Eaten</label>
+                <div class="form-group" style="text-align: center;">
+                    <label for="exampleInputFood1">Search for food to be logged</label>
                     <input type="food" class="form-control" id="food-input" name="food" placeholder="e.g. french toast">
                 </div>
                 <button type="submit" class="btn btn-primary" id="search-food-btn">Search Food</button>
             </form>
         </div>
-        <div class="col-md-6 col-md-offset-3">
-            <ul>
-
-            </ul>
-        </div>
     </div>
+</div>
+<div class="container">
     <div class="row">
-        <div class="card food-card" style="width: 18rem;">
-            <div class="card-body">
-                <div class="card-text" id="food-container"></div>
+        <div class="col-3 food-card form-group" style="width: 18rem;">
+            <div class="card card-body">
+                <div class="card-text food-outputs" id="food-container"></div>
+            </div>
+        </div>
+        <div class="col-4">
+            Hello
+        </div>
+        <div class="col">
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                                data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Food Item #1
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                        data-parent="#accordionExample">
+                        <div class="card-body" id="entered-food">
+                            Nutritional information of food item 1
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button"
+                                data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+                                aria-controls="collapseTwo">
+                                Food Item #2
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                            Nutritional Information of Food Item 2
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button"
+                                data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
+                                aria-controls="collapseThree">
+                                Food Item #3
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                        data-parent="#accordionExample">
+                        <div class="card-body">
+                            Nutrition info for food 3
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
 </div>
-
 <script>
-  let foodContainer = $("#food-container");
+    let foodContainer = $("#food-container");
+    let logFoodContainer = $("#entered-food");
 
-  $(document).ready(function () {
+    $(document).ready(function () {
+
         $(function () {
             $("#datepicker").datepicker();
         });
-        
+
         $(".findfood").on("submit", function (event) {
             event.preventDefault();
             foodContainer.empty();
@@ -49,10 +103,10 @@
                     alert("Food does not exist");
                 });
         });
-        
+
         $("#food-container").on("click", ".remove-food", function (event) {
             event.preventDefault();
-            window.location.replace("/logfood");             
+            window.location.replace("/logfood");
         });
 
         $("#food-container").on("click", ".log-food", function (event) {
@@ -73,22 +127,20 @@
                         FoodId: foodID,
                         quantity: parseInt(servings),
                         date: date
-                    }, function(data) {
-                        console.log(data);
-                        
+                    }, function (data) {
+
                     })
             }
-        
-      });
+        });
 
-   });
+    });
 
     function createFoodCard(data) {
-        let foodName = $("<p>").text(`Food Item: ${data.name} \n`).addClass("card-text");
-        let calories = $("<p>").text(`Calories: ${data.calories} \n`).addClass("card-text");
-        let carbs = $("<p>").text(`Carbs: ${data.carbs} \n`).addClass("card-text");
-        let protein = $("<p>").text(`Protein: ${data.protein} \n`).addClass("card-text");
-        let sugars = $("<p>").text(`Sugars: ${data.sugars} \n`).addClass("card-text");
+        let foodName = $("<h4>").text(`${data.name} \n`).addClass("food-outputs");
+        let calories = $("<p>").text(`Calories: ${data.calories} \n`).addClass("food-outputs");
+        let carbs = $("<p>").text(`Carbs: ${data.carbs}g \n`).addClass("food-outputs");
+        let protein = $("<p>").text(`Protein: ${data.protein}g \n`).addClass("food-outputs");
+        let sugars = $("<p>").text(`Sugars: ${data.sugars}g \n`).addClass("food-outputs");
         let acceptBtn = $("<button>").addClass("btn btn-primary log-food").attr("data-food-id", data.id).text("Add Food");
         let declineBtn = $("<button>").addClass("btn btn-danger remove-food").text("Remove");
 
@@ -98,14 +150,15 @@
         dateText.append(datePicker);
         let image = $("<img>").attr("src", data.image);
 
-        foodContainer.append(image, foodName, calories, carbs, protein, sugars, servingsInput, dateText, acceptBtn, declineBtn);
+        foodContainer.append(foodName, image, calories, carbs, protein, sugars, servingsInput, dateText, acceptBtn, declineBtn);
     }
-    // function renderRecentFoods(user) {
-    //     let userId = user.id;
-    //     $.get(`/api/nutrition/${userId}`)
-    //     .then(function(usersFood) {
-            
-    //         // $("<li>").
-    //     })
-    // }
+    function renderRecentFoods(user) {
+        $.get(`/api/nutrition/${req.user.id}`)
+            .then(function (usersFood) {
+                console.log(usersFood);
+                let userFoodName = $("<li>").text(`${usersFood.name}`).attr("id", "entered-food");
+                logFoodContainer.append(userFoodName);
+
+            })
+    }
 </script>
