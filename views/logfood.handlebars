@@ -115,10 +115,10 @@
             let servings = $("#servings-input").val();
             let date = new Date($("#datepicker").val());
 
-            if (servings === null) {
+            if (!servings) {
                 alert("Please enter number of servings");
             }
-            else if (date === null) {
+            else if (!date) {
                 alert("Please enter the date this item was eaten");
             }
             else {
@@ -153,12 +153,11 @@
         foodContainer.append(foodName, image, calories, carbs, protein, sugars, servingsInput, dateText, acceptBtn, declineBtn);
     }
     function renderRecentFoods(user) {
-        $.get(`/api/nutrition/${req.user.id}`)
+        $.get(`/api/nutrition/users`)
             .then(function (usersFood) {
                 console.log(usersFood);
                 let userFoodName = $("<li>").text(`${usersFood.name}`).attr("id", "entered-food");
                 logFoodContainer.append(userFoodName);
-
             })
     }
 </script>
