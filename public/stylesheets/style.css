@@ -32,3 +32,8 @@ footer {
 .index-cards{
   text-align: center;
 }
+
+.active {
+  color: white;
+  background-color:red;
+}
