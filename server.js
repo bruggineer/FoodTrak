@@ -63,3 +63,4 @@ db.sequelize.sync(config).then(function() {
     );
   });
 });
+
