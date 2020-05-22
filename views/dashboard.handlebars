@@ -52,7 +52,7 @@
           response.forEach(element => {
             calories += (element.Food.calories * element.quantity);
             $("#calories").text(`Calories consumed Today: ${calories}`);
-            $("#foods-eaten").append($("<tr>").append($("<td>").text(`${element.Food.name.toUpperCase()} -- Servings: ${element.quantity}`)));
+            $("#foods-eaten").append($("<tr>").append($("<td>").text(`${element.Food.name.toUpperCase()} -- Servings: ${element.quantity} -- Calories: ${element.Food.calories * element.quantity}`)));
           });
         }
       })
