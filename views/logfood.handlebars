@@ -1,30 +1,13 @@
 {{> navbar user }}
 <div class="container">
-    <div class="row">
-        <div class="col-md">
-            <h1 class="display-3" style="text-align: center; margin-top: 20px; position:relative; top:15px;">Log Food</h1>
-            <div class="jumbotron"
-                style="background-image: url(https://cdn.pixabay.com/photo/2015/07/26/14/02/diet-861173_1280.jpg); background-size: 100%;">
-            </div>
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-6">
+      <form class="findfood">
+        <div class="form-group" style="text-align: center;">
+          <label for="exampleInputFood1">Search for food to be logged</label>
+          <input type="food" class="form-control" id="food-input" name="food" placeholder="e.g. french toast" />
         </div>
-    </div>
-</div>
-<div class="container">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-6">
-            <form class="findfood">
-                <div class="form-group" style="text-align: center;">
-                    <label for="exampleInputFood1">Start below by entering the food you've eaten today</label>
-                    <input type="food" class="form-control" id="food-input" name="food" placeholder="e.g. french toast">
-                </div>
-                <button type="submit" class="btn btn-primary btn-sm findfood" id="search-food-btn">Search Food</button>
-            </form>
-        </div>
-        <button
-          type="submit"
-          class="btn btn-primary btn-sm findfood"
-          id="search-food-btn"
-        >
+        <button type="submit" class="btn btn-primary btn-sm findfood" id="search-food-btn">
           Search Food
         </button>
       </form>
@@ -55,13 +38,13 @@
   let logFoodContainer = $(".entered-foodname");
   let userFoodContainer = $(".entered-foodinfo");
 
-  $(document).ready(function() {
+  $(document).ready(function () {
     renderRecentFoods();
-    $(function() {
+    $(function () {
       $("#datepicker").datepicker();
     });
 
-    $(".findfood").on("submit", function(event) {
+    $(".findfood").on("submit", function (event) {
       event.preventDefault();
       foodContainer.empty();
       $(".serving-input").empty();
@@ -70,16 +53,16 @@
         .val()
         .trim();
       $.get(`/api/nutrition/${foodName}`)
-        .then(function(data) {
+        .then(function (data) {
           createFoodCard(data);
         })
-        .catch(function(err) {
+        .catch(function (err) {
           console.log(err);
           alert("Food does not exist");
         });
     });
 
-    $(".serving-input").on("click", ".remove-food", function(event) {
+    $(".serving-input").on("click", ".remove-food", function (event) {
       event.preventDefault();
       window.location.replace("/logfood");
     });
@@ -105,7 +88,7 @@
       .addClass("btn btn-primary log-food")
       .attr("data-food-id", data.id)
       .text("Add Food");
-    acceptBtn.on("click", function(event) {
+    acceptBtn.on("click", function (event) {
       event.preventDefault();
       let foodID = $(this).attr("data-food-id");
       let servings = $("#servings-input").val();
@@ -123,7 +106,7 @@
             quantity: parseInt(servings),
             date: date,
           },
-          function(data) {
+          function (data) {
             renderRecentFoods();
             foodContainer.empty();
             $(".serving-input").empty();
@@ -155,7 +138,7 @@
     $(".serving-input").append(servingsInput, dateText, acceptBtn, declineBtn);
   }
   function renderRecentFoods() {
-    $.get(`/api/nutrition/users`).then(function(usersFood) {
+    $.get(`/api/nutrition/users`).then(function (usersFood) {
       $(".entered-foodname").empty();
       console.log(usersFood);
       for (i = 0; i < usersFood.length; i++) {
