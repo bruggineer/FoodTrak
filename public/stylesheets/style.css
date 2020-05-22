@@ -2,6 +2,10 @@ body {
   margin-bottom: 40px;
 }
 
+.index-cardimages img {
+  height: 197px;
+}
+
 .italic {
   font-style: italic;
 }
@@ -27,6 +31,7 @@ form.login {
 footer {
   text-align: center;
   background-color: #008cba;
+  padding: 0.5rem 1.0rem;
 }
 
 .index-cards{

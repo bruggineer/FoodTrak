@@ -3,48 +3,45 @@
 <div class="container">
   <div class="row">
     <div class="col-md">
-      <div
-        class="jumbotron"
-        style="background-image: url(https://cdn.stocksnap.io/img-thumbs/960w/fruits-vegetables_VCXUQACTGW.jpg); background-size: 100%;"
-      >
-        <h1 class="display-3" style="text-align: center; margin-top: 40px;">
-          FoodTrak 
-        </h1>
-        <h4 class="display-6" style="text-align: center;">
+      <div class="jumbotron"
+        style="background-image: url(https://cdn.stocksnap.io/img-thumbs/960w/fruits-vegetables_VCXUQACTGW.jpg); background-size: 100%; padding-top:45px">
+        <h1 class="display-6" style="text-align: center; margin-bottom:0;">FoodTrak</h1>
+        <h6 class="display-12" style="text-align: center; margin-bottom:0;">
           Welcome back, {{ user.email }}.
-        </h4>
+        </h6>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="row">
-    <div class="col-md">
-      <div class="card" style="width: 18rem;">
+<div class="row">
+  <div class="col-md">
+      <div class="card mx-auto" style="width: 18rem;">
         <div class="card-body">
           <div class="card-text" id="calories"></div>
         </div>
       </div>
-    </div>
-    <div class="col-md">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Foods Eaten Today</th>
-          </tr>
-        </thead>
-        <tbody id="foods-eaten"></tbody>
-      </table>
-    </div>
   </div>
+  <div class="col-md">
+    <table class="table table-hover mx-auto">
+      <thead>
+        <tr>
+          <th scope="col">Foods Eaten Today</th>
+        </tr>
+      </thead>
+      <tbody id="foods-eaten"></tbody>
+    </table>
+  </div>
+</div>
 </div>
 <script>
 
-  $(document).ready(function() {
-    
+  $(document).ready(function () {
+
     $.get(`/api/nutrition/today`)
-      .then(function(response) {
+      .then(function (response) {
         console.log(response);
-        if(response.length < 1) {
+        if (response.length < 1) {
           $("#calories").addClass("italic").text(`You have not logged any foods today.`);
           $("#foods-eaten").append($("<tr>").append($("<td>").addClass("italic").text("Logged foods will show up here.")));
         }
@@ -57,7 +54,7 @@
           });
         }
       })
-      .catch(function(err) {
+      .catch(function (err) {
         if (err) throw err;
       });
   });
