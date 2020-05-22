@@ -8,7 +8,7 @@
                     <label for="exampleInputFood1">Search for food to be logged</label>
                     <input type="food" class="form-control" id="food-input" name="food" placeholder="e.g. french toast">
                 </div>
-                <button type="submit" class="btn btn-primary" id="search-food-btn">Search Food</button>
+                    <button type="submit" class="btn btn-primary btn-sm findfood" id="search-food-btn">Search Food</button>
             </form>
         </div>
     </div>
@@ -16,64 +16,18 @@
 <div class="container">
     <div class="row">
         <div class="col-3 food-card form-group" style="width: 18rem;">
-            <div class="card card-body">
+            <div class="card-body">
                 <div class="card-text food-outputs" id="food-container"></div>
             </div>
         </div>
-        <div class="col-4">
-            Hello
-        </div>
         <div class="col">
+            <div class="container">
+                <div class="serving-input"></div>
+            </div>
+        </div>
+        <div class="col-5">
             <div class="accordion" id="accordionExample">
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
-                                data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Food Item #1
-                            </button>
-                        </h2>
-                    </div>
-
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                        data-parent="#accordionExample">
-                        <div class="card-body" id="entered-food">
-                            Nutritional information of food item 1
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
-                                aria-controls="collapseTwo">
-                                Food Item #2
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                        <div class="card-body">
-                            Nutritional Information of Food Item 2
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingThree">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
-                                aria-controls="collapseThree">
-                                Food Item #3
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-                        data-parent="#accordionExample">
-                        <div class="card-body">
-                            Nutrition info for food 3
-                        </div>
-                    </div>
+                <div class="card entered-foodname">
                 </div>
             </div>
         </div>
@@ -81,10 +35,11 @@
 </div>
 <script>
     let foodContainer = $("#food-container");
-    let logFoodContainer = $("#entered-food");
+    let logFoodContainer = $(".entered-foodname");
+    let userFoodContainer = $(".entered-foodinfo");
 
     $(document).ready(function () {
-
+        renderRecentFoods()
         $(function () {
             $("#datepicker").datepicker();
         });
@@ -104,7 +59,7 @@
                 });
         });
 
-        $("#food-container").on("click", ".remove-food", function (event) {
+        $(".serving-input").on("click", ".remove-food", function (event) {
             event.preventDefault();
             window.location.replace("/logfood");
         });
@@ -137,27 +92,50 @@
 
     function createFoodCard(data) {
         let foodName = $("<h4>").text(`${data.name} \n`).addClass("food-outputs");
-        let calories = $("<p>").text(`Calories: ${data.calories} \n`).addClass("food-outputs");
-        let carbs = $("<p>").text(`Carbs: ${data.carbs}g \n`).addClass("food-outputs");
-        let protein = $("<p>").text(`Protein: ${data.protein}g \n`).addClass("food-outputs");
-        let sugars = $("<p>").text(`Sugars: ${data.sugars}g \n`).addClass("food-outputs");
+        let calories = $("<li>").text(`Calories: ${data.calories} \n`).addClass("food-outputs");
+        let carbs = $("<li>").text(`Carbs: ${data.carbs}g \n`).addClass("food-outputs");
+        let protein = $("<li>").text(`Protein: ${data.protein}g \n`).addClass("food-outputs");
+        let sugars = $("<li>").text(`Sugars: ${data.sugars}g \n`).addClass("food-outputs");
         let acceptBtn = $("<button>").addClass("btn btn-primary log-food").attr("data-food-id", data.id).text("Add Food");
         let declineBtn = $("<button>").addClass("btn btn-danger remove-food").text("Remove");
 
-        let servingsInput = $("<input>").attr("type", "number").attr("id", "servings-input").attr("placeholder", "Servings").attr("min", 1).attr("max", 10).addClass("form-control");
+        let servingsInput = $("<input>").attr("type", "number").attr("id", "servings-input").attr("placeholder", "Select Number of Servings").attr("min", 1).attr("max", 10).addClass("form-control");
         let datePicker = $("<input>").attr("type", "text").attr("id", "datepicker").attr("placeholder", "mm/dd/yyyy");
         let dateText = $("<p>").text("Date Consumed:");
         dateText.append(datePicker);
         let image = $("<img>").attr("src", data.image);
 
-        foodContainer.append(foodName, image, calories, carbs, protein, sugars, servingsInput, dateText, acceptBtn, declineBtn);
+        foodContainer.append(foodName, image, calories, carbs, protein, sugars);
+        $(".serving-input").append(servingsInput, dateText, acceptBtn, declineBtn)
     }
-    function renderRecentFoods(user) {
+    function renderRecentFoods() {
         $.get(`/api/nutrition/users`)
             .then(function (usersFood) {
                 console.log(usersFood);
-                let userFoodName = $("<li>").text(`${usersFood.name}`).attr("id", "entered-food");
-                logFoodContainer.append(userFoodName);
+                for (i = 0; i < 10; i++) {
+                    let userFoodName = $("<h4>").text(`${usersFood[i].Food.name}`).addClass("entered-foodname");
+                    let calories = $("<li>").text(`Calories: ${usersFood[i].Food.calories} \n`).addClass("entered-foodinfo");
+                    let carbs = $("<li>").text(`Carbs: ${usersFood[i].Food.carbs}g \n`).addClass("entered-foodinfo");
+                    let protein = $("<li>").text(`Protein: ${usersFood[i].Food.protein}g \n`).addClass("entered-foodinfo");
+                    let sugars = $("<li>").text(`Sugars: ${usersFood[i].Food.sugars}g \n`).addClass("entered-foodinfo");
+
+                
+                    let eatenDiv = $("<div>").addClass("card-header").attr("id", "headingOne" + i);
+                    let eatenButton = $("<button>").addClass("btn btn-link btn-block text-left").attr("type", "button").attr("data-toggle", "collapse").attr("data-target", "#collapseOne" + i).attr("aria-expanded", "true").attr("aria-controls", "collapseOne" + i);
+                    let eatenNutrition = $("<div>").addClass("collapse").attr("aria-labelledby", "headingOne" + i).attr("data-parent","accordionExample").attr("id", "collapseOne" + i);
+                    let eatenInfo = $("<div>").addClass("card-body entered-foodinfo");
+
+                    
+                    eatenButton.append(userFoodName);
+                    eatenDiv.append(eatenButton);
+                    logFoodContainer.append(eatenDiv);
+
+                    
+                    eatenInfo.append(calories, carbs, protein, sugars);
+                    eatenNutrition.append(eatenInfo);
+                    logFoodContainer.append(eatenNutrition);
+                    
+                };
             })
     }
 </script>
