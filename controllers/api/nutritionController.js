@@ -8,12 +8,14 @@ const Op = db.Sequelize.Op;
  * Food - Create
  * Notice how we are also taking in the User Id! Important!
  */
-router.get("/users/:userid", function(req, res) {
+router.get("/users", function(req, res) {
   db.UsersFood.findAll({
     where: {
-      UserId: req.params.userid
+      UserId: req.user.id
     },
-    include: [db.Food]
+    include: [db.Food],
+    limit: 10,
+    order: [["createdAt", "DESC"]]
   }).then(function(dbUsersFood) {
     if (dbUsersFood) {
       res.send(dbUsersFood);
@@ -33,8 +35,8 @@ router.get("/today", function(req, res) {
     include: [db.Food]
   }).then(function(dbUsersFood) {
     res.send(dbUsersFood);
-  })
-})
+  });
+});
 
 router.get("/:foodName", function(req, res) {
   db.Food.findOne({
@@ -89,6 +91,7 @@ router.get("/:foodName", function(req, res) {
 });
 
 router.post("/", function(req, res) {
+  console.log(req.body);
   db.UsersFood.create({ UserId: req.user.id, ...req.body })
     .then(function(dbModel) {
       res.send(dbModel);

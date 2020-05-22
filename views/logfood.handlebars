@@ -1,111 +1,199 @@
 {{> navbar user }}
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <form class="findfood">
-                <div class="form-group">
-                    <label for="exampleInputFood1">Food Eaten</label>
-                    <input type="food" class="form-control" id="food-input" name="food" placeholder="e.g. french toast">
-                </div>
-                <button type="submit" class="btn btn-primary" id="search-food-btn">Search Food</button>
-            </form>
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-6">
+      <form class="findfood">
+        <div class="form-group" style="text-align: center;">
+          <label for="exampleInputFood1">Search for food to be logged</label>
+          <input
+            type="food"
+            class="form-control"
+            id="food-input"
+            name="food"
+            placeholder="e.g. french toast"
+          />
         </div>
-        <div class="col-md-6 col-md-offset-3">
-            <ul>
-
-            </ul>
-        </div>
+        <button
+          type="submit"
+          class="btn btn-primary btn-sm findfood"
+          id="search-food-btn"
+        >
+          Search Food
+        </button>
+      </form>
     </div>
-    <div class="row">
-        <div class="card food-card" style="width: 18rem;">
-            <div class="card-body">
-                <div class="card-text" id="food-container"></div>
-            </div>
-        </div>
-    </div>
-
+  </div>
 </div>
-
+<div class="container">
+  <div class="row">
+    <div class="col-3 food-card form-group" style="width: 18rem;">
+      <div class="card-body">
+        <div class="card-text food-outputs" id="food-container"></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="container">
+        <div class="serving-input"></div>
+      </div>
+    </div>
+    <div class="col-5">
+      <div class="accordion" id="accordionExample">
+        <div class="card entered-foodname"></div>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
   let foodContainer = $("#food-container");
+  let logFoodContainer = $(".entered-foodname");
+  let userFoodContainer = $(".entered-foodinfo");
 
-  $(document).ready(function () {
-        $(function () {
-            $("#datepicker").datepicker();
+  $(document).ready(function() {
+    renderRecentFoods();
+    $(function() {
+      $("#datepicker").datepicker();
+    });
+
+    $(".findfood").on("submit", function(event) {
+      event.preventDefault();
+      foodContainer.empty();
+      $(".serving-input").empty();
+
+      var foodName = $("#food-input")
+        .val()
+        .trim();
+      $.get(`/api/nutrition/${foodName}`)
+        .then(function(data) {
+          createFoodCard(data);
+        })
+        .catch(function(err) {
+          console.log(err);
+          alert("Food does not exist");
         });
-        
-        $(".findfood").on("submit", function (event) {
-            event.preventDefault();
+    });
+
+    $(".serving-input").on("click", ".remove-food", function(event) {
+      event.preventDefault();
+      window.location.replace("/logfood");
+    });
+  });
+
+  function createFoodCard(data) {
+    let foodName = $("<h4>")
+      .text(`${data.name} \n`)
+      .addClass("food-outputs");
+    let calories = $("<li>")
+      .text(`Calories: ${data.calories} \n`)
+      .addClass("food-outputs");
+    let carbs = $("<li>")
+      .text(`Carbs: ${data.carbs}g \n`)
+      .addClass("food-outputs");
+    let protein = $("<li>")
+      .text(`Protein: ${data.protein}g \n`)
+      .addClass("food-outputs");
+    let sugars = $("<li>")
+      .text(`Sugars: ${data.sugars}g \n`)
+      .addClass("food-outputs");
+    let acceptBtn = $("<button>")
+      .addClass("btn btn-primary log-food")
+      .attr("data-food-id", data.id)
+      .text("Add Food");
+    acceptBtn.on("click", function(event) {
+      event.preventDefault();
+      let foodID = $(this).attr("data-food-id");
+      let servings = $("#servings-input").val();
+      let date = new Date($("#datepicker").val());
+
+      if (!servings) {
+        alert("Please enter number of servings");
+      } else if (!date) {
+        alert("Please enter the date this item was eaten");
+      } else {
+        $.post(
+          "/api/nutrition",
+          {
+            FoodId: foodID,
+            quantity: parseInt(servings),
+            date: date,
+          },
+          function(data) {
+            renderRecentFoods();
             foodContainer.empty();
+            $(".serving-input").empty();
+          }
+        );
+      }
+    });
 
-            var foodName = $("#food-input").val().trim();
-            $.get(`/api/nutrition/${foodName}`)
-                .then(function (data) {
-                    createFoodCard(data);
-                })
-                .catch(function (err) {
-                    console.log(err);
-                    alert("Food does not exist");
-                });
-        });
-        
-        $("#food-container").on("click", ".remove-food", function (event) {
-            event.preventDefault();
-            window.location.replace("/logfood");             
-        });
+    let declineBtn = $("<button>")
+      .addClass("btn btn-danger remove-food")
+      .text("Remove");
 
-        $("#food-container").on("click", ".log-food", function (event) {
-            event.preventDefault();
-            let foodID = $(this).attr("data-food-id");
-            let servings = $("#servings-input").val();
-            let date = new Date($("#datepicker").val());
+    let servingsInput = $("<input>")
+      .attr("type", "number")
+      .attr("id", "servings-input")
+      .attr("placeholder", "Select Number of Servings")
+      .attr("min", 1)
+      .attr("max", 10)
+      .addClass("form-control");
+    let datePicker = $("<input>")
+      .attr("type", "text")
+      .attr("id", "datepicker")
+      .attr("placeholder", "mm/dd/yyyy");
+    let dateText = $("<p>").text("Date Consumed:");
+    dateText.append(datePicker);
+    let image = $("<img>").attr("src", data.image);
 
-            if (servings === null) {
-                alert("Please enter number of servings");
-            }
-            else if (date === null) {
-                alert("Please enter the date this item was eaten");
-            }
-            else {
-                $.post("/api/nutrition",
-                    {
-                        FoodId: foodID,
-                        quantity: parseInt(servings),
-                        date: date
-                    }, function(data) {
-                        console.log(data);
-                        
-                    })
-            }
-        
-      });
+    foodContainer.append(foodName, image, calories, carbs, protein, sugars);
+    $(".serving-input").append(servingsInput, dateText, acceptBtn, declineBtn);
+  }
+  function renderRecentFoods() {
+    $.get(`/api/nutrition/users`).then(function(usersFood) {
+      $(".entered-foodname").empty();
+      console.log(usersFood);
+      for (i = 0; i < usersFood.length; i++) {
+        let userFoodName = $("<h4>")
+          .text(`${usersFood[i].Food.name}`)
+          .addClass("entered-foodname");
+        let calories = $("<li>")
+          .text(`Calories: ${usersFood[i].Food.calories} \n`)
+          .addClass("entered-foodinfo");
+        let carbs = $("<li>")
+          .text(`Carbs: ${usersFood[i].Food.carbs}g \n`)
+          .addClass("entered-foodinfo");
+        let protein = $("<li>")
+          .text(`Protein: ${usersFood[i].Food.protein}g \n`)
+          .addClass("entered-foodinfo");
+        let sugars = $("<li>")
+          .text(`Sugars: ${usersFood[i].Food.sugars}g \n`)
+          .addClass("entered-foodinfo");
 
-   });
+        let eatenDiv = $("<div>")
+          .addClass("card-header")
+          .attr("id", "headingOne" + i);
+        let eatenButton = $("<button>")
+          .addClass("btn btn-link btn-block text-left")
+          .attr("type", "button")
+          .attr("data-toggle", "collapse")
+          .attr("data-target", "#collapseOne" + i)
+          .attr("aria-expanded", "true")
+          .attr("aria-controls", "collapseOne" + i);
+        let eatenNutrition = $("<div>")
+          .addClass("collapse")
+          .attr("aria-labelledby", "headingOne" + i)
+          .attr("data-parent", "accordionExample")
+          .attr("id", "collapseOne" + i);
+        let eatenInfo = $("<div>").addClass("card-body entered-foodinfo");
 
-    function createFoodCard(data) {
-        let foodName = $("<p>").text(`Food Item: ${data.name} \n`).addClass("card-text");
-        let calories = $("<p>").text(`Calories: ${data.calories} \n`).addClass("card-text");
-        let carbs = $("<p>").text(`Carbs: ${data.carbs} \n`).addClass("card-text");
-        let protein = $("<p>").text(`Protein: ${data.protein} \n`).addClass("card-text");
-        let sugars = $("<p>").text(`Sugars: ${data.sugars} \n`).addClass("card-text");
-        let acceptBtn = $("<button>").addClass("btn btn-primary log-food").attr("data-food-id", data.id).text("Add Food");
-        let declineBtn = $("<button>").addClass("btn btn-danger remove-food").text("Remove");
+        eatenButton.append(userFoodName);
+        eatenDiv.append(eatenButton);
+        logFoodContainer.append(eatenDiv);
 
-        let servingsInput = $("<input>").attr("type", "number").attr("id", "servings-input").attr("placeholder", "Servings").attr("min", 1).attr("max", 10).addClass("form-control");
-        let datePicker = $("<input>").attr("type", "text").attr("id", "datepicker").attr("placeholder", "mm/dd/yyyy");
-        let dateText = $("<p>").text("Date Consumed:");
-        dateText.append(datePicker);
-        let image = $("<img>").attr("src", data.image);
-
-        foodContainer.append(image, foodName, calories, carbs, protein, sugars, servingsInput, dateText, acceptBtn, declineBtn);
-    }
-    // function renderRecentFoods(user) {
-    //     let userId = user.id;
-    //     $.get(`/api/nutrition/${userId}`)
-    //     .then(function(usersFood) {
-            
-    //         // $("<li>").
-    //     })
-    // }
+        eatenInfo.append(calories, carbs, protein, sugars);
+        eatenNutrition.append(eatenInfo);
+        logFoodContainer.append(eatenNutrition);
+      }
+    });
+  }
 </script>

@@ -1,5 +1,9 @@
 body {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+}
+
+.container {
+  margin-top: 10px;
 }
 
 .italic {
@@ -27,4 +31,8 @@ form.login {
 footer {
   text-align: center;
   background-color: #008cba;
+}
+
+.index-cards{
+  text-align: center;
 }
