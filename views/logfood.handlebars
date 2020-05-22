@@ -1,18 +1,24 @@
 {{> navbar user }}
-
 <div class="container">
-  <div class="row d-flex justify-content-center">
-    <div class="col-md-6">
-      <form class="findfood">
-        <div class="form-group" style="text-align: center;">
-          <label for="exampleInputFood1">Search for food to be logged</label>
-          <input
-            type="food"
-            class="form-control"
-            id="food-input"
-            name="food"
-            placeholder="e.g. french toast"
-          />
+    <div class="row">
+        <div class="col-md">
+            <h1 class="display-3" style="text-align: center; margin-top: 20px; position:relative; top:15px;">Log Food</h1>
+            <div class="jumbotron"
+                style="background-image: url(https://cdn.pixabay.com/photo/2015/07/26/14/02/diet-861173_1280.jpg); background-size: 100%;">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6">
+            <form class="findfood">
+                <div class="form-group" style="text-align: center;">
+                    <label for="exampleInputFood1">Start below by entering the food you've eaten today</label>
+                    <input type="food" class="form-control" id="food-input" name="food" placeholder="e.g. french toast">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm findfood" id="search-food-btn">Search Food</button>
+            </form>
         </div>
         <button
           type="submit"
@@ -168,7 +174,6 @@
         let sugars = $("<li>")
           .text(`Sugars: ${usersFood[i].Food.sugars}g \n`)
           .addClass("entered-foodinfo");
-
         let eatenDiv = $("<div>")
           .addClass("card-header")
           .attr("id", "headingOne" + i);
