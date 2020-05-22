@@ -3,8 +3,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md">
-            <div class="jumbotron" style="background-image: url(https://cdn.pixabay.com/photo/2016/07/21/11/17/mineral-water-1532300_1280.jpg); background-size: 100%;">
-                <h1 class="display-3" style= "text-align: center; margin-top: 40px;">Forum</h1>
+            <div class="jumbotron"
+                style="background-image: url(https://cdn.pixabay.com/photo/2016/07/21/11/17/mineral-water-1532300_1280.jpg); background-size: 100%;">
+                <h1 class="display-3" style="text-align: center; margin-top: 40px;">Forum</h1>
             </div>
         </div>
     </div>
@@ -12,68 +13,70 @@
         <div class="col-md">
             <legend>Forum Posts</legend>
             <div class="form-group">
-                    <label for="category-filter">Filter by Category:</label>
-                    <select id="category-filter" name="catchoice">
-                        <option value="dietonly">Diet Posts</option>
-                        <option value="exeronly">Exercise Posts</option>
-                        <option value="progonly">Progress Posts</option>
-                        <option value="motivonly">Motivational Posts</option>
-                        <option value="all">All Posts</option>
-                    </select>
+                <label for="category-filter">Filter by Category:</label>
+                <select id="category-filter">
+                    <option value="select"><a href=''>Select One...</a></option>
+                    <option value="diet"><a href='/forum?category=diet'>Diet Posts</a></option>
+                    <option value="exercise"><a href='/forum?category=exercise'>Exercise Posts</a></option>
+                    <option value="progress"><a href='/forum?category=progress'>Progress Posts</a></option>
+                    <option value="motivation"><a href='/forum?category=motivation'>Motivational Posts</a></option>
+                    <option value="all">All Posts</option>
+                </select>
             </div>
             <div id="forum-posts">
-            {{#each posts/:category}}
-            <div class="forum-post-card card text-white bg-primary mb-3">
-                <div class="card-header"><h4 class="text-white">{{title}}</h4></div>
-                <div class="card-body">
-                    <p class="card-text">{{body}}</p>
-                    by {{'User.email'}}
-                    @ {{createdAt}}
-                    <p>Under category: {{category}}</p>
+                {{#each posts}}
+                <div class="forum-post-card card text-white bg-primary mb-3">
+                    <div class="card-header">
+                        <h4 class="text-white">{{title}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{body}}</p>
+                        by {{'User.email'}}
+                        @ {{createdAt}}
+                        <p>filed as category: {{category}}</p>
+                    </div>
                 </div>
-            </div>
-            {{/each}}
+                {{/each}}
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-md">
-        <form class="forum-post">
-            <fieldset>
-                <legend>Create Your Own Post</legend>
-                <p>
-                    Type in your post title and body below, and click submit to send it to our database. We will
-                    register it with your email address, and display it above with everyone else's posts!</p>
-                </p>
-                <div class="form-group">
-                    <label for="title-input">Title</label>
-                    <input type="text" class="form-control" id="title-input" aria-describedby="postHelp"
-                        placeholder="Enter your post title">
-                    <small id="postHelp" class="form-text text-muted">This'll be shared!</small>
-                </div>
+    <div class="row">
+        <div class="col-md">
+            <form class="forum-post">
+                <fieldset>
+                    <legend>Create Your Own Post</legend>
+                    <p>
+                        Type in your post title and body below, and click submit to send it to our database. We will
+                        register it with your email address, and display it above other posts!</p>
+                    </p>
+                    <div class="form-group">
+                        <label for="title-input">Title</label>
+                        <input type="text" class="form-control" id="title-input" aria-describedby="postHelp"
+                            placeholder="Enter your post title">
+                        <small id="postHelp" class="form-text text-muted">This'll be shared!</small>
+                    </div>
 
-                <div class="form-group">
-                    <label for="body-input">Body</label>
-                    <textarea class="form-control" id="body-input" name="body"
-                        placeholder="Enter your post body"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="category-input">Category</label>
-                    <select id="category-input" name="category">
-                        <option value="diet">Diet</option>
-                        <option value="exercise">Exercise</option>
-                        <option value="progress">Progress</option>
-                        <option value="motivation">Motivation</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Post!</button>
-            </fieldset>
-        </form>
-        <br />
+                    <div class="form-group">
+                        <label for="body-input">Body</label>
+                        <textarea class="form-control" id="body-input" name="body"
+                            placeholder="Enter your post body"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="category-input">Category</label>
+                        <select id="category-input" name="category">
+                            <option value="diet">Diet</option>
+                            <option value="exercise">Exercise</option>
+                            <option value="progress">Progress</option>
+                            <option value="motivation">Motivation</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post!</button>
+                </fieldset>
+            </form>
+            <br />
+        </div>
     </div>
-</div>
 </div>
 
 <script>
@@ -83,7 +86,6 @@
         const titleInput = $("input#title-input");
         const bodyInput = $("textarea#body-input");
         const categoryInput = $("select#category-input");
-
 
         // When the form is submitted, we validate there's a title and body entered
         postForm.on("submit", function (event) {
@@ -122,5 +124,40 @@
                     console.log(err);
                 });
         }
+
+        $("#category-filter").change(function () {
+    
+            var filter = $("select#category-filter");
+            console.log(filter);
+            var filterChoice = filter.val();
+            filter.val("");
+            console.log(filterChoice);
+            if (filterChoice === "all") {
+                window.location.replace("/forum"); 
+            }
+            else {
+            window.location.replace("/forum/category/" + filterChoice);
+        }
+            // function getPosts(filterChoice) {
+            //     console.log(filterChoice)
+
+            //     $.get("/api/posts/category/" + filterChoice)
+            //         .then(function (res) {
+            //             posts = res;
+            //             console.log(res);
+            //                     if (!posts || !posts.length) {
+            //                         alert(filterChoice + " has no posts");
+            //                     } 
+            //                     {{!-- else {
+            //                         window.location.replace("/forum");
+            //                     } --}}
+            //             // If there's an error, log the error
+            //         })
+            //         .catch(function (err) {
+            //             console.log(err)
+            //         })
+
+            // }; 
+        });
     });
 </script>

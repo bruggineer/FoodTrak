@@ -14,7 +14,7 @@ router.get("/", function(req, res) {
  * Post - Read One
  */
 router.get("/:id", function(req, res) {
-  db.Post.findById(req.params.id)
+  db.Post.findByPk(req.params.id)
     .then(dbModel => res.json(dbModel))
     .catch(err => res.status(422).json(err));
 });
@@ -22,8 +22,12 @@ router.get("/:id", function(req, res) {
 /** 
  * Post- Read All of one Category
  */
-router.get("/:category", function(req, res) {
-  db.Post.findAll({where: {category : req.params.catchoice}})
+router.get("/category/:category", function(req, res) {
+  db.Post.findAll({
+    where: {
+      category : req.params.category
+    }
+  })
     .then(dbModel => res.json(dbModel))
     .catch(err => res.status(422).json(err));
 });
