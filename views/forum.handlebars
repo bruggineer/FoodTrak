@@ -1,17 +1,21 @@
 {{> navbar user}}
 
+<!-- Forum Jumbotron -->
 <div class="container">
     <div class="row">
         <div class="col-md">
             <div class="jumbotron"
                 style="background-image: url(https://cdn.pixabay.com/photo/2016/07/21/11/17/mineral-water-1532300_1280.jpg); background-size: 100%;">
-                <h1 class="display-3" style="text-align: center; margin-top: 40px;">FoodTrack Forum</h1>
+                <h1 class="display-10 headline text-center" style="margin-bottom:0;">The Forum</h1>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md">
-            <legend>Forum Posts</legend>
+
+    <!-- View and filter Forum posts area -->
+    <div class="row justify-content-md-center">
+        <div class="col mx-auto">
+            <h3>Forum Posts</h3>
+            <!-- filter by category -->
             <div class="form-group">
                 <label for="category-filter">Filter by Category:</label>
                 <select id="category-filter">
@@ -23,6 +27,8 @@
                     <option value="all">All Posts</option>
                 </select>
             </div>
+
+            <!-- render posts-->
             <div id="forum-posts">
                 {{#each posts}}
                 <div class="forum-post-card card text-white bg-primary mb-3">
@@ -42,25 +48,23 @@
     </div>
 
     <div class="row">
-        <div class="col-md">
+        <div class="col mx-auto">
             <form class="forum-post">
                 <fieldset>
                     <legend>Create Your Own Post</legend>
                     <p>
-                        Type in your post title and body below, and click submit to send it to our database. We will
-                        register it with your email address, and display it above other posts!</p>
+                        Share your triumphs, workouts, best foods, and your motivation with our FoodTrak community. Ask your new fitness friends for advise about what works for them.  </p>
                     </p>
                     <div class="form-group">
                         <label for="title-input">Title</label>
                         <input type="text" class="form-control" id="title-input" aria-describedby="postHelp"
                             placeholder="Enter your post title">
-                        <small id="postHelp" class="form-text text-muted">This'll be shared!</small>
                     </div>
 
                     <div class="form-group">
                         <label for="body-input">Body</label>
                         <textarea class="form-control" id="body-input" name="body"
-                            placeholder="Enter your post body"></textarea>
+                            placeholder="Enter your message or question"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="category-input">Category</label>
@@ -71,7 +75,9 @@
                             <option value="motivation">Motivation</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Post!</button>
+                    <small id="postHelp" class="form-text text-muted">Your email will be included with your post</small>
+                    </br>
+                    <button type="submit" class="btn btn-primary">Post!</button>\                    
                 </fieldset>
             </form>
             <br />
