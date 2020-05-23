@@ -2,12 +2,50 @@ body {
   margin-bottom: 40px;
 }
 
+form.signup, form.login {
+  margin-top: 50px;
+}
+
+footer {
+  text-align: center;
+  background-color: #008cba;
+  padding: 0.5rem 1.0rem;
+}
+
+.index-cardimages img {
+  height: 197px;
+}
+
 .italic {
   font-style: italic;
 }
 
-form.signup,
-form.login {
+.forum-post-card {
+  width: 100%;
+}
+
+.forum-post {
+  width: 100%;
+}
+
+.foodImage {
+  width: 150px;
+  overflow: auto;
+}
+
+.index-cards {
+  text-align: center;
+}
+
+/* .active {
+  color: white;
+} */
+
+.italic {
+  font-style: italic;
+}
+
+form.signup, form.login {
   margin-top: 50px;
 }
 
@@ -29,8 +67,8 @@ footer {
   background-color: #008cba;
 }
 
-.index-cards{
-  text-align: center;
+#servings-input {
+  margin-top: 50px;
 }
 
 #servings-input{
@@ -48,29 +86,60 @@ footer {
   align-content: center;
 }
 
-.food-history{
-  margin-top:20px;
+.food-history {
+  margin-top: 20px;
 }
 
-.left{
+.left {
   width: 25%;
 }
 
-.main{
+.main {
   justify-content: center;
 }
 
-.capitalize{
+.capitalize {
   text-transform: capitalize;
 }
 
-.search-img-spacing{
+.search-img-spacing {
   margin: 10px;
 }
 
-#food-container{
-  background-color: rgba(0,0,0,0.03);
+.foodbox {
+  padding: 10px;
 }
+
+#food-container {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+@media screen and (max-width:800px) {
+  .left, .main, .right {
+    float: left;
+    width: 100%;
+    margin: 30px;
+  }
+}
+
+.subhead {
+  font-size: 0.5rem;
+}
+
+.headline {
+  font-size: 2.75rem;
+  font-family: "Nunito", sans-serif;
+  text-shadow: 0 0 1px whitesmoke, 0 0 1px whitesmoke, 0 0 1px whitesmoke, 0 0 1px whitesmoke;
+}
+
+@media (min-width: 768px) {
+  .headline {
+    width: 100%;
+    font-size: 7rem;
+  }
+  .subhead {
+    font-size: 1.5rem;
+  }
 
 @media screen and (max-width:800px) {
   .left, 

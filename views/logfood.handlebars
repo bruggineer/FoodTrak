@@ -1,28 +1,32 @@
 {{> navbar user }}
+
+<!-- jumbtron for Food Logg -->
 <div class="container">
   <div class="row">
     <div class="col-md">
-      <h1 class="display-3" style="text-align: center; margin-top: 20px; position:relative; top:15px;">Log Food</h1>
       <div class="jumbotron"
         style="background-image: url(https://cdn.pixabay.com/photo/2015/07/26/14/02/diet-861173_1280.jpg); background-size: 100%;">
+        <h1 class="display-10 headline text-center" style="margin-bottom:0;">Food Log</h1>
       </div>
     </div>
   </div>
-</div>
-<div class="container">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-6">
-            <form class="findfood">
-                <div class="form-group" style="text-align: center;">
-                    <label for="exampleInputFood1">Enter the food you've eaten today.</label>
-                    <input type="food" class="form-control" id="food-input" name="food" placeholder="e.g. french toast">
-                </div>
-                <button type="submit" class="btn btn-primary btn-sm findfood" id="search-food-btn">Search Food</button>
-            </form>
+
+  <!-- the food search input and button -->
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-6">
+      <form class="findfood">
+        <div class="form-group text-center">
+          <label for="exampleInputFood1">Enter each food you've eaten today.</label>
+          <input type="food" class="form-control" id="food-input" name="food" placeholder="e.g. french toast">
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm findfood" id="search-food-btn">Search Food</button>
+      </form>
     </div>
   </div>
-</div>
-<div class="container">
+  </br>
+  
+
+  <!-- the returned food item data from the API -->
   <div class="row">
     <div class="col food-card form-group left" style="">
       <div class="card-body">
@@ -41,6 +45,7 @@
     </div>
   </div>
 </div>
+
 <script>
   let foodContainer = $("#food-container");
   let logFoodContainer = $(".entered-foodname");
@@ -70,6 +75,8 @@
         });
     });
 
+
+    //remove button 
     $(".serving-input").on("click", ".remove-food", function (event) {
       event.preventDefault();
       window.location.replace("/logfood");

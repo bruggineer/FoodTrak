@@ -1,77 +1,78 @@
- {{> navbar user}}
+{{> navbar user}}
 
-<div class="container">  
-    <div class="row">
+<div class="container">
+  <div class="row">
     <div class="col-md">
-      <div class="jumbotron" style="background-image: url(https://cdn.pixabay.com/photo/2014/04/09/15/25/fruits-320136_1280.jpg); background-size: 100%;">
-                <h1 class="display-3" style= "text-align: center; margin-top: 20px; position:relative;bottom:80px;">Sign Up for FoodTrak</h1>
-            </div>
+      <div class="jumbotron"
+        style="background-image: url(https://cdn.pixabay.com/photo/2014/04/09/15/25/fruits-320136_1280.jpg); background-size: 100%;">
+        <h1 class="display-10 headline text-center">Sign Up</h1>
+      </div>
     </div>
   </div>
-    {{!-- this row for centering --}}
+  {{!-- this row for centering --}}
   <div class="row justify-content-md-center">
     {{!-- this col for sizing --}}
     <div class="col-md-3">
       <h3>Win at healthy!</h3>
-            <form class="signup">
-                <div class="form-group">
-                    <label for="email-input">Email address</label>
-                    <input type="email" class="form-control" id="email-input" name="email" placeholder="Email">
-                </div>
-                <div class="form-group">
-                    <label for="password-input">Password</label>
-                    <input type="password" class="form-control" id="password-input" name="password" placeholder="Password">
-                </div>
-                <div style="display: none" id="alert" class="alert alert-danger" role="alert">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span class="sr-only">Error:</span> <span class="msg"></span>
-                </div>
-                <button type="submit" class="btn btn-primary">Sign Up</button>
-            </form>
-            <br />
-            <p>Or Log In <a href="/login">here</a></p>
+      <form class="signup">
+        <div class="form-group">
+          <label for="email-input">Email address</label>
+          <input type="email" class="form-control" id="email-input" name="email" placeholder="Email">
         </div>
+        <div class="form-group">
+          <label for="password-input">Password</label>
+          <input type="password" class="form-control" id="password-input" name="password" placeholder="Password">
+        </div>
+        <div style="display: none" id="alert" class="alert alert-danger" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span> <span class="msg"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+      </form>
+      <br />
+      <p>Or Log In <a href="/login">here</a></p>
     </div>
+  </div>
 </div>
 
 <script>
-$(document).ready(function() {
-  // Getting references to our form and inputs
-  var signupForm = $("form.signup");
-  var emailInput = $("input#email-input");
-  var passwordInput = $("input#password-input");
+  $(document).ready(function () {
+    // Getting references to our form and inputs
+    var signupForm = $("form.signup");
+    var emailInput = $("input#email-input");
+    var passwordInput = $("input#password-input");
 
-  // When the form is submitted, we validate there's an email and password entered
-  signupForm.on("submit", function(event) {
-    event.preventDefault();
-    var userData = {
-      email: emailInput.val().trim(),
-      password: passwordInput.val().trim()
-    };
+    // When the form is submitted, we validate there's an email and password entered
+    signupForm.on("submit", function (event) {
+      event.preventDefault();
+      var userData = {
+        email: emailInput.val().trim(),
+        password: passwordInput.val().trim()
+      };
 
-    if (!userData.email || !userData.password) {
-      return;
-    }
+      if (!userData.email || !userData.password) {
+        return;
+      }
 
-    // If we have an email and password we run the signUp function and clear the form
-    signupUser(userData.email, userData.password);
-    emailInput.val("");
-    passwordInput.val("");
-  });
+      // If we have an email and password we run the signUp function and clear the form
+      signupUser(userData.email, userData.password);
+      emailInput.val("");
+      passwordInput.val("");
+    });
 
-  // signUp does a post to our "auth/login" route and if successful, redirects us the the members page
-  function signupUser(email, password) {
-    $.post("/auth/signup", {
-      email: email,
-      password: password
-    })
-      .then(function() {
-        window.location.replace("/dashboard");
-        // If there's an error, log the error
+    // signUp does a post to our "auth/login" route and if successful, redirects us the the members page
+    function signupUser(email, password) {
+      $.post("/auth/signup", {
+        email: email,
+        password: password
       })
-      .catch(function(err) {
-        console.log(err);
-      });
-  }
-});
+        .then(function () {
+          window.location.replace("/dashboard");
+          // If there's an error, log the error
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    }
+  });
 </script>
