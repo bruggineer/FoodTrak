@@ -1,13 +1,13 @@
 {{> navbar user }}
 <div class="container">
-    <div class="row">
-        <div class="col-md">
-            <h1 class="display-3" style="text-align: center; margin-top: 20px; position:relative; top:15px;">Log Food</h1>
-            <div class="jumbotron"
-                style="background-image: url(https://cdn.pixabay.com/photo/2015/07/26/14/02/diet-861173_1280.jpg); background-size: 100%;">
-            </div>
-        </div>
+  <div class="row">
+    <div class="col-md">
+      <h1 class="display-3" style="text-align: center; margin-top: 20px; position:relative; top:15px;">Log Food</h1>
+      <div class="jumbotron"
+        style="background-image: url(https://cdn.pixabay.com/photo/2015/07/26/14/02/diet-861173_1280.jpg); background-size: 100%;">
+      </div>
     </div>
+  </div>
 </div>
 <div class="container">
   <div class="row d-flex justify-content-center">
@@ -26,17 +26,17 @@
 </div>
 <div class="container">
   <div class="row">
-    <div class="col-3 food-card form-group" style="width: 18rem;">
+    <div class="col food-card form-group left" style="">
       <div class="card-body">
         <div class="card-text food-outputs" id="food-container"></div>
       </div>
     </div>
-    <div class="col">
+    <div class="col main">
       <div class="container">
         <div class="serving-input"></div>
       </div>
     </div>
-    <div class="col-5">
+    <div class="col food-history right">
       <div class="accordion" id="accordionExample">
         <div class="card entered-foodname"></div>
       </div>
@@ -81,7 +81,7 @@
   function createFoodCard(data) {
     let foodName = $("<h4>")
       .text(`${data.name} \n`)
-      .addClass("food-outputs");
+      .addClass("food-outputs card-header capitalize");
     let calories = $("<li>")
       .text(`Calories: ${data.calories} \n`)
       .addClass("food-outputs");
@@ -140,9 +140,9 @@
       .attr("type", "text")
       .attr("id", "datepicker")
       .attr("placeholder", "mm/dd/yyyy");
-    let dateText = $("<p>").text("Date Consumed:");
+    let dateText = $("<p>").text("Date Consumed:").attr("id", "date-box");
     dateText.append(datePicker);
-    let image = $("<img>").attr("src", data.image);
+    let image = $("<img>").attr("src", data.image).addClass("search-img-spacing");
 
     foodContainer.append(foodName, image, calories, carbs, protein, sugars);
     $(".serving-input").append(servingsInput, dateText, acceptBtn, declineBtn);
@@ -153,8 +153,8 @@
       console.log(usersFood);
       for (i = 0; i < usersFood.length; i++) {
         let userFoodName = $("<h4>")
-          .text(`${usersFood[i].Food.name}`)
-          .addClass("entered-foodname");
+          .text(`${usersFood[i].Food.name}` + "          " + `${usersFood[i].Food.consumed_at}`.slice(5, 10))
+          .addClass("entered-foodname capitalize");
         let calories = $("<li>")
           .text(`Calories: ${usersFood[i].Food.calories} \n`)
           .addClass("entered-foodinfo");
@@ -167,6 +167,8 @@
         let sugars = $("<li>")
           .text(`Sugars: ${usersFood[i].Food.sugars}g \n`)
           .addClass("entered-foodinfo");
+        let image = $("<img>")
+          .attr("src", usersFood[i].Food.image);
         let eatenDiv = $("<div>")
           .addClass("card-header")
           .attr("id", "headingOne" + i);
@@ -188,7 +190,7 @@
         eatenDiv.append(eatenButton);
         logFoodContainer.append(eatenDiv);
 
-        eatenInfo.append(calories, carbs, protein, sugars);
+        eatenInfo.append(image, calories, carbs, protein, sugars);
         eatenNutrition.append(eatenInfo);
         logFoodContainer.append(eatenNutrition);
       }

@@ -32,3 +32,52 @@ footer {
 .index-cards{
   text-align: center;
 }
+
+#servings-input{
+  margin-top: 50px;
+}
+
+#date-box{
+  margin-top: 40px;
+  margin-bottom: 50px;
+}
+
+.remove-food,
+.log-food{
+  margin: 10px;
+  align-content: center;
+}
+
+.food-history{
+  margin-top:20px;
+}
+
+.left{
+  width: 25%;
+}
+
+.main{
+  justify-content: center;
+}
+
+.capitalize{
+  text-transform: capitalize;
+}
+
+.search-img-spacing{
+  margin: 10px;
+}
+
+#food-container{
+  background-color: rgba(0,0,0,0.03);
+}
+
+@media screen and (max-width:800px) {
+  .left, 
+  .main, 
+  .right {
+    float: left;
+    width:100%;
+    margin: 30px;
+  }
+}
