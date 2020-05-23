@@ -9,14 +9,14 @@ const isAuthenticated = require("../config/middleware/isAuthenticated");
  * Home Page
  */
 router.get("/", function(req, res) {
-  res.render("index", { user: req.user });
+  res.render("index", { user: req.user})
 });
 
 /**
  * Home Page, again
  */
 router.get("/home", function(req, res) {
-  res.render("index", { user: req.user });
+  res.render("index", { user: req.user});
 });
 
 /**
@@ -26,7 +26,7 @@ router.get("/signup", function(req, res) {
   if (req.user) {
     res.redirect("/");
   } else {
-    res.render("signup", { user: req.user });
+    res.render("signup", { user: req.user});
   }
 });
 
@@ -37,7 +37,7 @@ router.get("/login", function(req, res) {
   if (req.user) {
     res.redirect("/");
   } else {
-    res.render("login", { user: req.user });
+    res.render("login", { user: req.user});
   }
 });
 
@@ -45,14 +45,14 @@ router.get("/login", function(req, res) {
  * Forum Page -
  * Notice loading our posts, with that include!
  */
-router.get("/forum", isAuthenticated, function(req, res) {
+router.get("/forum", isAuthenticated, function(req, res, next) {
   db.Post.findAll({
     order: [["createdAt", "DESC"]],
     limit: 10, raw: true, include: [db.User] }) // Joins User to Posts! And scrapes all the seqeulize stuff off
     .then(dbModel => {
-      res.render("forum", { user: req.user, posts: dbModel });
+      res.render("forum", { user: req.user, posts: dbModel});
     })
-    .catch(err => res.status(422).json(err));
+    .catch(err => res.status(422).json(err))
 });
 
 /**
@@ -70,7 +70,7 @@ router.get("/forum/category/:category", isAuthenticated, function(req, res) {
 });
 
 router.get("/logfood", isAuthenticated, function(req, res) {
-  res.render("logfood", { user: req.user });
+  res.render("logfood", { user: req.user});
 });
 
 router.get("/dashboard", isAuthenticated, function(req, res) {
@@ -81,7 +81,7 @@ router.get("/dashboard", isAuthenticated, function(req, res) {
     }
   }).then(function(dbUsersFood) {
     console.log(dbUsersFood);
-    res.render("dashboard", { user: req.user, usersFood: dbUsersFood });
+    res.render("dashboard", { user: req.user, usersFood: dbUsersFood});
   });
 });
 /**

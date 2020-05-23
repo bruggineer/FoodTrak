@@ -8,7 +8,7 @@
         style="background-image: url(https://cdn.stocksnap.io/img-thumbs/960w/fruits-vegetables_VCXUQACTGW.jpg); background-size: 100%;"
       >
         <h1 class="display-3" style="text-align: center; margin-top: 40px;">
-          Dashboard
+          FoodTrak 
         </h1>
         <h4 class="display-6" style="text-align: center;">
           Welcome back, {{ user.email }}.
@@ -40,6 +40,7 @@
 <script>
 
   $(document).ready(function() {
+    
     $.get(`/api/nutrition/today`)
       .then(function(response) {
         console.log(response);
