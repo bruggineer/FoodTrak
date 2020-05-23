@@ -71,12 +71,17 @@ footer {
   margin-top: 50px;
 }
 
-#date-box {
+#servings-input{
+  margin-top: 50px;
+}
+
+#date-box{
   margin-top: 40px;
   margin-bottom: 50px;
 }
 
-.remove-food, .log-food {
+.remove-food,
+.log-food{
   margin: 10px;
   align-content: center;
 }
@@ -134,5 +139,14 @@ footer {
   }
   .subhead {
     font-size: 1.5rem;
+  }
+
+@media screen and (max-width:800px) {
+  .left, 
+  .main, 
+  .right {
+    float: left;
+    width:100%;
+    margin: 30px;
   }
 }

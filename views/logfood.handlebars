@@ -28,23 +28,18 @@
 
   <!-- the returned food item data from the API -->
   <div class="row">
-    <!-- Food item returned-->
-    <div class="col-lg-4 container">
-      <div class="food-card form-group mx-auto foodbox" style="width: 18rem;">
-        <div class="card-body">
-          <div class="card-text food-outputs" id="food-container"></div>
-        </div>
+    <div class="col food-card form-group left" style="">
+      <div class="card-body">
+        <div class="card-text food-outputs" id="food-container"></div>
       </div>
     </div>
-    <!-- Servings and Date input -->
-    <div class="col-lg-4 container">
-      <div class="col mx-auto">
+    <div class="col main">
+      <div class="container">
         <div class="serving-input"></div>
       </div>
     </div>
-    <!-- Recent foods list -->
-    <div class="col-lg-4 container">
-      <div class="accordion mx-auto" id="accordionExample">
+    <div class="col food-history right">
+      <div class="accordion" id="accordionExample">
         <div class="card entered-foodname"></div>
       </div>
     </div>
@@ -80,6 +75,7 @@
         });
     });
 
+
     //remove button 
     $(".serving-input").on("click", ".remove-food", function (event) {
       event.preventDefault();
@@ -90,7 +86,7 @@
   function createFoodCard(data) {
     let foodName = $("<h4>")
       .text(`${data.name} \n`)
-      .addClass("food-outputs");
+      .addClass("food-outputs card-header capitalize");
     let calories = $("<li>")
       .text(`Calories: ${data.calories} \n`)
       .addClass("food-outputs");
@@ -149,9 +145,9 @@
       .attr("type", "text")
       .attr("id", "datepicker")
       .attr("placeholder", "mm/dd/yyyy");
-    let dateText = $("<p>").text("Date Consumed:");
+    let dateText = $("<p>").text("Date Consumed:").attr("id", "date-box");
     dateText.append(datePicker);
-    let image = $("<img>").attr("src", data.image);
+    let image = $("<img>").attr("src", data.image).addClass("search-img-spacing");
 
     foodContainer.append(foodName, image, calories, carbs, protein, sugars);
     $(".serving-input").append(servingsInput, dateText, acceptBtn, declineBtn);
@@ -162,8 +158,8 @@
       console.log(usersFood);
       for (i = 0; i < usersFood.length; i++) {
         let userFoodName = $("<h4>")
-          .text(`${usersFood[i].Food.name}`)
-          .addClass("entered-foodname");
+          .text(`${usersFood[i].Food.name}` + "          " + `${usersFood[i].Food.consumed_at}`.slice(5, 10))
+          .addClass("entered-foodname capitalize");
         let calories = $("<li>")
           .text(`Calories: ${usersFood[i].Food.calories} \n`)
           .addClass("entered-foodinfo");
@@ -176,6 +172,8 @@
         let sugars = $("<li>")
           .text(`Sugars: ${usersFood[i].Food.sugars}g \n`)
           .addClass("entered-foodinfo");
+        let image = $("<img>")
+          .attr("src", usersFood[i].Food.image);
         let eatenDiv = $("<div>")
           .addClass("card-header")
           .attr("id", "headingOne" + i);
@@ -197,7 +195,7 @@
         eatenDiv.append(eatenButton);
         logFoodContainer.append(eatenDiv);
 
-        eatenInfo.append(calories, carbs, protein, sugars);
+        eatenInfo.append(image, calories, carbs, protein, sugars);
         eatenNutrition.append(eatenInfo);
         logFoodContainer.append(eatenNutrition);
       }
