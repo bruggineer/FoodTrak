@@ -26,11 +26,10 @@ router.get("/users", function(req, res) {
 });
 
 router.get("/today", function(req, res) {
-  console.log(moment().startOf("day"));
   db.UsersFood.findAll({
     where: {
       UserId: req.user.id,
-      date: moment().startOf("day")
+      date: process.env.NODE_ENV === "production" ? moment().utc().startOf("day") : moment().startOf("day")
     },
     include: [db.Food]
   }).then(function(dbUsersFood) {
