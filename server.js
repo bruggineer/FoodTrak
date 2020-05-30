@@ -1,4 +1,5 @@
 require("dotenv").config();
+const compression = require("compression");
 
 // Requiring necessary npm packages
 const express = require("express");
@@ -33,7 +34,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(compression());
 // Set up handlebars
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
