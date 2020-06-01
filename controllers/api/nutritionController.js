@@ -3,7 +3,6 @@ const router = require("express").Router();
 const axios = require("axios");
 const moment = require("moment");
 
-const Op = db.Sequelize.Op;
 /**
  * Food - Create
  * Notice how we are also taking in the User Id! Important!
@@ -30,11 +29,11 @@ router.get("/today", function(req, res) {
   db.UsersFood.findAll({
     where: {
       UserId: req.user.id,
-      date: process.env.NODE_ENV === "development" ? moment().startOf("day") : moment().utc().startOf("day")
+      date: process.env.NODE_ENV === "development" ? moment().startOf("day").format() : moment().utc().startOf("day").format()
     },
     include: [db.Food]
   }).then(function(dbUsersFood) {
-    res.send(dbUsersFood);
+    res.json(dbUsersFood);
   });
 });
 
